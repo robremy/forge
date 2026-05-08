@@ -1,0 +1,27 @@
+## tests
+
+Command: python -m pytest
+Exit code: 0
+
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.3, pluggy-1.6.0
+rootdir: D:\4. Project\forge
+configfile: pyproject.toml
+testpaths: tests
+collected 11 items
+
+tests\test_gap.py ..                                                     [ 18%]
+tests\test_git_guard.py ..                                               [ 36%]
+tests\test_memory.py ..                                                  [ 54%]
+tests\test_run_context.py .                                              [ 63%]
+tests\test_status.py ..                                                  [ 81%]
+tests\test_test_runner.py ..                                             [100%]
+
+============================= 11 passed in 1.13s ==============================
+
+## lint
+
+Command: python -m compileall -q src/forge
+Exit code: 0
+
+

@@ -1,0 +1,33 @@
+project:
+  name: forge
+  type: python-cli
+
+runtime:
+  test_command: "python -m pytest"
+  lint_command: "python -m compileall -q src/forge"
+
+paths:
+  allowed_write:
+    - "src/"
+    - "tests/"
+    - "skills/"
+    - ".forge/state/"
+    - ".forge/memory/"
+    - ".forge/backlog/"
+    - "README.md"
+
+  protected:
+    - ".git/"
+    - ".env"
+    - ".github/"
+    - ".devcontainer/"
+    - "AGENTS.md"
+    - "forge.yml"
+    - ".forge/horizon/"
+    - ".forge/policy/"
+
+self_improvement:
+  enabled: true
+  direct_main_write: false
+  require_tests: true
+  require_human_merge: true

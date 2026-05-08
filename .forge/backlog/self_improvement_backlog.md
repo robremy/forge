@@ -20,3 +20,26 @@ Acceptance criteria:
 
 Risk:
 low
+
+Status:
+completed in run 20260508-193351
+
+## Improvement: Add conservative state updater
+
+Source:
+Level 2 maturity model.
+
+Problem:
+Forge can create runs and learn from them, but state files still require manual edits after behavior changes.
+
+Proposed change:
+Add a state updater that records latest run, test health, and conservative capability or limitation updates after runs.
+
+Acceptance criteria:
+- Successful runs can record latest run and verified capabilities.
+- Failed runs update limitations without claiming success.
+- State updates remain readable markdown.
+- Tests cover success and failure state updates.
+
+Risk:
+low

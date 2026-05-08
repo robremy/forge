@@ -1,11 +1,21 @@
 # Test Health
 
-No tests exist yet.
-
-Target:
+Latest known result:
 
 ```text
-pytest passes locally
-forge verify calls pytest
-test output is captured per run
+python -m pytest
+10 passed
+```
+
+`forge verify` also runs:
+
+```text
+python -m pytest
+python -m compileall -q src/forge
+```
+
+Latest successful run:
+
+```text
+20260508-193653
 ```

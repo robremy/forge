@@ -1,0 +1,218 @@
+warning: in the working copy of '.forge/backlog/self_improvement_backlog.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.forge/state/architecture.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.forge/state/capabilities.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.forge/state/current_state.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.forge/state/limitations.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.forge/state/test_health.md', LF will be replaced by CRLF the next time Git touches it
+diff --git a/.forge/backlog/self_improvement_backlog.md b/.forge/backlog/self_improvement_backlog.md
+index 3712b45..b563bff 100644
+--- a/.forge/backlog/self_improvement_backlog.md
++++ b/.forge/backlog/self_improvement_backlog.md
+@@ -20,3 +20,26 @@ Acceptance criteria:
+ 
+ Risk:
+ low
++
++Status:
++completed in run 20260508-193351
++
++## Improvement: Add conservative state updater
++
++Source:
++Level 2 maturity model.
++
++Problem:
++Forge can create runs and learn from them, but state files still require manual edits after behavior changes.
++
++Proposed change:
++Add a state updater that records latest run, test health, and conservative capability or limitation updates after runs.
++
++Acceptance criteria:
++- Successful runs can record latest run and verified capabilities.
++- Failed runs update limitations without claiming success.
++- State updates remain readable markdown.
++- Tests cover success and failure state updates.
++
++Risk:
++low
+diff --git a/.forge/memory/success_patterns.md b/.forge/memory/success_patterns.md
+index 2ac0197..989ad05 100644
+--- a/.forge/memory/success_patterns.md
++++ b/.forge/memory/success_patterns.md
+@@ -16,3 +16,7 @@ Why it worked:
+ Reuse:
+ <how to apply next time>
+ ```
++
++## Success Pattern: Verified run 20260508-193351
++
++Small controlled runs with static verification are safe to learn from.
+diff --git a/.forge/state/architecture.md b/.forge/state/architecture.md
+index cf79ece..32e1e3f 100644
+--- a/.forge/state/architecture.md
++++ b/.forge/state/architecture.md
+@@ -1,6 +1,6 @@
+ # Current Architecture
+ 
+-Current architecture is specification-only.
++Current architecture is a minimal Python CLI kernel.
+ 
+ Target bootstrap architecture:
+ 
+@@ -15,3 +15,17 @@ CLI
+  -> Memory writer
+  -> State updater
+ ```
++
++Implemented modules:
++
++```text
++src/forge/main.py
++src/forge/config.py
++src/forge/run_context.py
++src/forge/state.py
++src/forge/horizon.py
++src/forge/gap.py
++src/forge/memory.py
++src/forge/git_guard.py
++src/forge/test_runner.py
++```
+diff --git a/.forge/state/capabilities.md b/.forge/state/capabilities.md
+index bf6f2ca..c5fb6de 100644
+--- a/.forge/state/capabilities.md
++++ b/.forge/state/capabilities.md
+@@ -8,11 +8,18 @@ At bootstrap specification stage:
+ - Can describe maturity model.
+ - Can describe first implementation tasks.
+ - Can provide Codex-readable instructions.
++- Can parse `forge` CLI commands.
++- Can read markdown state and horizon files.
++- Can create `.forge/runs/<run-id>/` artifact folders.
++- Can write required run artifacts, including clear placeholders.
++- Can run deterministic verification commands from `forge.yml`.
++- Can propose one gap-based improvement.
++- Can learn from the latest run into markdown memory.
++- Can detect protected path changes through git guard helpers.
+ 
+ ## Target next capabilities
+ 
+-- CLI command parsing.
+-- Markdown state reading.
+-- Run folder creation.
+-- Static verification.
+-- Gap-based improvement selection.
++- Conservative state updates after runs.
++- Richer gap selection from backlog and maturity model.
++- Branch-based self-improvement execution.
++- Codex CLI wrapper behind one interface.
+diff --git a/.forge/state/current_state.md b/.forge/state/current_state.md
+index 3e727c9..b8cb832 100644
+--- a/.forge/state/current_state.md
++++ b/.forge/state/current_state.md
+@@ -1,10 +1,10 @@
+ # Current State
+ 
+-Forge is currently a bootstrap specification.
++Forge is currently a minimal local kernel.
+ 
+ ## Current maturity
+ 
+-Level 0 â€” Manual Prototype
++Level 1 â€” Local Kernel
+ 
+ ## Working
+ 
+@@ -12,25 +12,28 @@ Level 0 â€” Manual Prototype
+ - Markdown build instructions exist.
+ - Skills are specified as markdown.
+ - Horizon and state structure are defined.
++- Python CLI package exists.
++- `forge status` reports current state.
++- `forge run --task` creates run folders and required artifacts.
++- `forge verify` runs static commands from `forge.yml`.
++- `forge improve` proposes one gap-based next task.
++- `forge learn --run latest` writes run lessons and updates markdown memory.
++- Basic pytest coverage passes.
+ 
+ ## Not working yet
+ 
+-- No Python CLI exists yet.
+-- No run folders are generated yet.
+-- No verification command exists yet.
+-- No gap analyzer exists yet.
+ - No self-improvement executor exists yet.
+ - No Codex CLI wrapper exists yet.
++- No automatic state updater exists yet.
++- No branch mode exists yet.
+ 
+ ## Immediate next goal
+ 
+-Reach Level 1 â€” Local Kernel.
++Reach Level 2 â€” Self-Aware Kernel.
+ 
+ That means:
+ 
+-- create a Python CLI;
+-- implement `forge status`;
+-- implement `forge run --task`;
+-- implement `forge verify`;
+-- create run artifacts;
+-- add tests.
++- update current state after runs;
++- produce richer gap analysis;
++- keep capabilities and limitations conservative;
++- prepare controlled self-improvement execution.
+diff --git a/.forge/state/limitations.md b/.forge/state/limitations.md
+index 2ee45d1..7baa78d 100644
+--- a/.forge/state/limitations.md
++++ b/.forge/state/limitations.md
+@@ -1,14 +1,13 @@
+ # Limitations
+ 
+-Forge has not yet been implemented.
++Forge has a minimal local kernel, but it is not yet a full self-improving builder.
+ 
+ Known limitations:
+ 
+-- No executable package.
+-- No tests.
+-- No config parser.
+ - No state updater.
+ - No Codex runner.
+-- No git guard.
+ - No branch management.
+ - No PR integration.
++- Gap analysis is intentionally simple.
++- Review artifacts are placeholders.
++- Diff capture does not include untracked files in bootstrap mode.
+diff --git a/.forge/state/test_health.md b/.forge/state/test_health.md
+index 92747e6..da88b45 100644
+--- a/.forge/state/test_health.md
++++ b/.forge/state/test_health.md
+@@ -1,11 +1,21 @@
+ # Test Health
+ 
+-No tests exist yet.
++Latest known result:
+ 
+-Target:
++```text
++python -m pytest
++10 passed
++```
++
++`forge verify` also runs:
++
++```text
++python -m pytest
++python -m compileall -q src/forge
++```
++
++Latest successful run:
+ 
+ ```text
+-pytest passes locally
+-forge verify calls pytest
+-test output is captured per run
++20260508-193351
+ ```
